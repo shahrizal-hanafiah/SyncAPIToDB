@@ -48,12 +48,12 @@ namespace SyncAPIToDB.DataAccess
                             }
                             using (SqlCommand cmd = new(query, cn))
                             {
-                                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = platform.Id;
-                                cmd.Parameters.Add("@UniqueName", SqlDbType.VarChar, 50).Value = platform.UniqueName;
-                                cmd.Parameters.Add("@Latitude", SqlDbType.Float).Value = platform.Latitude;
-                                cmd.Parameters.Add("@Longitude", SqlDbType.Float).Value = platform.Longitude;
-                                cmd.Parameters.Add("@CreatedAt", SqlDbType.DateTime).Value = platform.CreatedAt;
-                                cmd.Parameters.Add("@UpdatedAt", SqlDbType.DateTime).Value = platform.UpdatedAt;
+                                cmd.Parameters.AddWithValue("@Id", platform.Id);
+                                cmd.Parameters.AddWithValue("@UniqueName", platform.UniqueName);
+                                cmd.Parameters.AddWithValue("@Latitude", platform.Latitude);
+                                cmd.Parameters.AddWithValue("@Longitude", platform.Longitude);
+                                cmd.Parameters.AddWithValue("@CreatedAt", platform.CreatedAt.HasValue? platform.CreatedAt: DBNull.Value);
+                                cmd.Parameters.AddWithValue("@UpdatedAt", platform.UpdatedAt.HasValue ? platform.UpdatedAt : DBNull.Value);
 
                                 cmd.Transaction = trans;
                                 cmd.ExecuteNonQuery();
@@ -64,9 +64,9 @@ namespace SyncAPIToDB.DataAccess
                                 var resultWell = 0;
                                 string queryWell = "";
                                 string selectQueryWell = "SELECT count(*) from Well where id=@Id";
-                                using (SqlCommand cmdSelectWell = new SqlCommand(selectQueryWell, cn))
+                                using (SqlCommand cmdSelectWell = new(selectQueryWell, cn))
                                 {
-                                    cmdSelectWell.Parameters.Add("@Id", SqlDbType.Int).Value = well.Id;
+                                    cmdSelectWell.Parameters.AddWithValue("@Id", well.Id);
                                     cmdSelectWell.Transaction = trans;
                                     SqlDataReader readerWell = cmdSelectWell.ExecuteReader();
                                     while (readerWell.Read())
@@ -85,13 +85,13 @@ namespace SyncAPIToDB.DataAccess
                                 }
                                 using (SqlCommand cmdWell = new(queryWell, cn))
                                 {
-                                    cmdWell.Parameters.Add("@Id", SqlDbType.Int).Value = well.Id;
-                                    cmdWell.Parameters.Add("@PlatformId", SqlDbType.Int).Value = well.PlatformId;
-                                    cmdWell.Parameters.Add("@UniqueName", SqlDbType.VarChar, 50).Value = well.UniqueName;
-                                    cmdWell.Parameters.Add("@Latitude", SqlDbType.Float).Value = well.Latitude;
-                                    cmdWell.Parameters.Add("@Longitude", SqlDbType.Float).Value = well.Longitude;
-                                    cmdWell.Parameters.Add("@CreatedAt", SqlDbType.DateTime).Value = well.CreatedAt;
-                                    cmdWell.Parameters.Add("@UpdatedAt", SqlDbType.DateTime).Value = well.UpdatedAt;
+                                    cmdWell.Parameters.AddWithValue("@Id", well.Id);
+                                    cmdWell.Parameters.AddWithValue("@PlatformId", well.PlatformId);
+                                    cmdWell.Parameters.AddWithValue("@UniqueName", well.UniqueName);
+                                    cmdWell.Parameters.AddWithValue("@Latitude", well.Latitude);
+                                    cmdWell.Parameters.AddWithValue("@Longitude", well.Longitude);
+                                    cmdWell.Parameters.AddWithValue("@CreatedAt", well.CreatedAt.HasValue ? well.CreatedAt : DBNull.Value);
+                                    cmdWell.Parameters.AddWithValue("@UpdatedAt", well.UpdatedAt.HasValue ? well.UpdatedAt : DBNull.Value);
                                     cmdWell.Transaction = trans;
                                     cmdWell.ExecuteNonQuery();
                                 }
