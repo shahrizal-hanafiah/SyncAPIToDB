@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using SyncAPIToDB.DataAccess;
+using SyncAPIToDB.Entities;
 using SyncAPIToDB.Shared;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,18 @@ namespace SyncAPIToDB.Application
 {
     public class PlatformWell
     {
-        public void InsertPlatform(List<PlatformWell> lsPlatformWell)
+        public bool InsertPlatform(List<PlatformDto> lsPlatformWell)
         {
-
+            var platform = new PlatformWellDAL();
+            return platform.Insert(lsPlatformWell);
         }
 
-        public List<PlatformWell> GetPlatformWell(string token)
+        public List<PlatformDto> GetPlatformWell(string token)
         {
             HttpWebResponse response = null;
-            List<PlatformWell> lsPlatformWell = new();
+            List<PlatformDto> lsPlatformWell = new();
             string ResponseString = "";
-            var request = (HttpWebRequest)WebRequest.Create(AppSettings.Instance._apiURL + "/api/PlatformWell/GetPlatformWellActual");
+            var request = (HttpWebRequest)WebRequest.Create(AppSettings.Instance.ApiUrl + "/api/PlatformWell/GetPlatformWellActual");
             request.Accept = "application/json";
             request.Method = "GET";
             request.Headers["Authorization"] = "Bearer " + token;
@@ -34,7 +37,7 @@ namespace SyncAPIToDB.Application
                     ResponseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
                 }
 
-                lsPlatformWell = JsonConvert.DeserializeObject<List<PlatformWell>>(ResponseString);
+                lsPlatformWell = JsonConvert.DeserializeObject<List<PlatformDto>>(ResponseString);
                 
             }
             catch (Exception ex)

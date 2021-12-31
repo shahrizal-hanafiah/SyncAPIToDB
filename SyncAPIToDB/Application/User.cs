@@ -14,7 +14,7 @@ namespace SyncAPIToDB.Application
             string ResponseString = "";
             string token = "";
             HttpWebResponse response = null;
-            var request = (HttpWebRequest)WebRequest.Create(AppSettings.Instance._apiURL + "/api/Account/Login");
+            var request = (HttpWebRequest)WebRequest.Create(AppSettings.Instance.ApiUrl + "/api/Account/Login");
             request.Accept = "application/json";
             request.Method = "POST";
             var content = JsonConvert.SerializeObject(AppSettings.Instance._userCredential);
