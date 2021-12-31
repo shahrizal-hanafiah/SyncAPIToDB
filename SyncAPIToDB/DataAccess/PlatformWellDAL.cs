@@ -44,7 +44,7 @@ namespace SyncAPIToDB.DataAccess
                             }
                             else
                             {
-                                query = "UPDATE dbo.Platform SET UniqueName=@UniqueName, Latitude=@Latitude, Longitude=@Longitude, CreatedAt=@CreatedAt, UpdatedAt=@UpdatedAt";
+                                query = "UPDATE dbo.Platform SET UniqueName=@UniqueName, Latitude=@Latitude, Longitude=@Longitude, CreatedAt=@CreatedAt, UpdatedAt=@UpdatedAt where Id=@Id";
                             }
                             using (SqlCommand cmd = new(query, cn))
                             {
